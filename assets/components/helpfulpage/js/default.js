@@ -60,7 +60,7 @@ $(document).ready(function(){
             url: "/",
             data: form.serialize(),
             success: function(data) {
-                if(data.sucess === true){
+                if(data.success === true){
                     $('.helpfulPageInfo').hide().attr('hidden', true);
                     $('.helpfulPageForm').hide().attr('hidden', true);
                     $('.helpfulPageSuccess').show().attr('hidden', false);
