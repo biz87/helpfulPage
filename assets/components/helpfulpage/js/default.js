@@ -26,8 +26,8 @@ $(document).ready(function(){
             url: "/",
             data: {action:'helpfulPageStat',resource_id:resource_id},
             success: function(data) {
-                if(data.success){
-                    $('#helpfulPageStat').text(data.helpfullness);
+                if(data){
+                    $('#helpfulPageStat').text(data);
                 }
 
             },
