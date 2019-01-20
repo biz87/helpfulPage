@@ -164,6 +164,7 @@ class helpfulPage
             $this->sendEmail($email, $subject, $body);
             $response = [];
             $response['success'] = true;
+            return json_encode($response);
         }
     }
 
