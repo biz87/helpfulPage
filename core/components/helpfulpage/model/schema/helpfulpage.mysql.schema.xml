@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="helpfulpage" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="helpfulpage"
+       version="1.1">
+
+    <object class="helpfulPageVote" table="helpfulpage_votes" extends="xPDOSimpleObject">
+        <field key="resource_id" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false"/>
+        <field key="user_id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false"/>
+        <field key="user_ses_id" dbtype="varchar" precision="30" phptype="string" null="false"/>
+        <field key="user_ip" dbtype="varchar" precision="15" phptype="string" null="false"/>
+        <field key="vote" dbtype="tinyint" precision="1" phptype="integer"  null="false"/>
+    </object>
+
+</model>
