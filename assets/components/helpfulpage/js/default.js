@@ -75,7 +75,8 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.closeHelpfulPageForm', function(){
-        $('.helpfulPageForm')[0].reset().hide().attr('hidden', true);
+        $('.helpfulPageForm')[0].reset();
+        $('.helpfulPageForm').hide().attr('hidden', true);
         $('.helpfulPageInfo').hide().attr('hidden', true);
         $('.helpfulPageSuccess').show().attr('hidden', false);
     })
