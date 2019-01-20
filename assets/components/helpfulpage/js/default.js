@@ -61,6 +61,7 @@ $(document).ready(function(){
             url: "/",
             data: form.serialize(),
             success: function(data) {
+                console.log(data);
                 if(data.sucess){
                     $('.helpfulPageInfo').hide().attr('hidden', true);
                     $('.helpfulPageForm').hide().attr('hidden', true);
@@ -73,4 +74,12 @@ $(document).ready(function(){
 
         return false;
     });
+
+
+    $(document).on('click', '.closeHelpfulPageForm', function(){
+        $('.helpfulPageForm')[0].reset();
+        $('.helpfulPageInfo').hide().attr('hidden', true);
+        $('.helpfulPageForm').hide().attr('hidden', true);
+        $('.helpfulPageSuccess').show().attr('hidden', false);
+    })
 });

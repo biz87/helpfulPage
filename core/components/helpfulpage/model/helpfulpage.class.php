@@ -133,8 +133,9 @@ class helpfulPage
         $rows = $s->fetchAll(PDO::FETCH_ASSOC);
         $positiveCount = $rows[0]['count'];
 
-        $helpfulness = ceil($positiveCount * 100 / $totalCount);
-        if($helpfulness < 0){
+        if($totalCount > 0){
+            $helpfulness = ceil($positiveCount * 100 / $totalCount);
+        }else{
             return 0;
         }
         return $helpfulness;
