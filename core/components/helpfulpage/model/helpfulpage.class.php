@@ -4,6 +4,7 @@ class helpfulPage
 {
     /** @var modX $modx */
     public $modx;
+    public $pdo;
 
 
     /**
@@ -29,6 +30,7 @@ class helpfulPage
 
         $this->modx->addPackage('helpfulpage', $this->config['modelPath']);
         $this->modx->lexicon->load('helpfulpage:default');
+        $this->pdo = $this->modx->getService('pdoTools');
     }
 
     function vote($resource_id = 0, $action = '')
@@ -99,22 +101,7 @@ class helpfulPage
             'user_ses_id' => $ses_id
         ));
         if($voteObj->save()){
-            // Записываю количество положительных голосов в итоговую таблицу поста
-//            $q = $this->modx->newQuery('helpfulPageVote', array(
-//                'resource_id' => intval($resource_id),
-//                'vote' => $vote
-//            ));
-//            $q->select(array(
-//                "count(*) as count"
-//            ));
-//            $s = $q->prepare();
-//            $s->execute();
-//            $rows = $s->fetchAll(PDO::FETCH_ASSOC);
-//            $count = $rows[0]['count'];
-
-
             $data = [];
-            //$data['count'] = $count;
             $data['success'] = true;
             return $data;
         }
@@ -152,6 +139,51 @@ class helpfulPage
         }
         return $helpfulness;
 
+    }
+
+    private function modx_tags($str = ''){
+        $str = str_replace("[", "&#91;", $str);
+        $str = str_replace("]", "&#93;", $str);
+        $str = str_replace("{", "&#123;", $str);
+        $str = str_replace("}", "&#125;", $str);
+        return $str;
+    }
+
+    public function prepareEmail($resoure_id, $message, $emailTpl){
+        $email = $this->modx->getOption('emailsender');
+
+        $subject = 'Новый отзыв с сайта '.$this->modx->getOption('site_name');
+
+        if(!empty($message)){
+            $message = $this->modx_tags($message);
+        }
+
+        $body = $this->pdo->getChunk($emailTpl, array('message' => $message, 'resource_id' => $resoure_id));
+
+        if (preg_match('#.*?@.*#', $email)) {
+            $this->sendEmail($email, $subject, $body);
+        }
+    }
+
+
+
+    public function sendEmail($email, $subject, $body = '')
+    {
+        /** @var modPHPMailer $mail */
+        $mail = $this->modx->getService('mail', 'mail.modPHPMailer');
+        $mail->setHTML(true);
+
+        $mail->address('to', trim($email));
+        $mail->set(modMail::MAIL_SUBJECT, trim($subject));
+        $mail->set(modMail::MAIL_BODY, $body);
+        $mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
+        $mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
+        if (!$mail->send()) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,
+                'An error occurred while trying to send the email: ' . $mail->mailer->ErrorInfo
+            );
+        }
+        $mail->reset();
     }
 
 }

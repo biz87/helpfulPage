@@ -1,8 +1,12 @@
 <?php
 
 return [
-    'tpl.helpfulPage.tpl' => [
+    'tpl.helpfulPageTpl' => [
         'file' => 'tpl',
+        'description' => '',
+    ],
+    'tpl.helpfulPageEmailTpl' => [
+        'file' => 'email',
         'description' => '',
     ],
 ];
