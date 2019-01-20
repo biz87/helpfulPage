@@ -120,7 +120,7 @@ class helpfulPage
         }
     }
 
-    private function getHelpfulness($resource_id)
+    public function getHelpfulness($resource_id)
     {
         $q = $this->modx->newQuery('helpfulPageVote', array(
             'resource_id' => intval($resource_id),

@@ -16,6 +16,20 @@ switch ($modx->event->name) {
             die();
         }
 
+        if($_POST['action'] == 'helpfulPageStat'){
+
+            $helpfulPage = $modx->getService('helpfulPage', 'helpfulPage', MODX_CORE_PATH . 'components/helpfulpage/model/', $scriptProperties);
+            if (!$helpfulPage) {
+                $modx->log(modX::LOG_LEVEL_ERROR, '[helpfulPage] Could not load helpfulPage class!');
+                die();
+            }
+
+            $resource_id = filter_input(INPUT_POST,'resource_id', FILTER_VALIDATE_INT);
+            $response = $helpfulPage->getHelpfulness($resource_id);
+            echo $response;
+            die();
+        }
+
 
         break;
 }

@@ -10,10 +10,28 @@ $(document).ready(function(){
             url: "/",
             data: {action:'helpfulPageVote',vote_action:vote_action,resource_id:resource_id},
             success: function(data) {
-               console.log(data);
+                if(data.success){
+                    $('#helpfulPageStat').text(data.helpfullness);
+                }
 
             },
             'dataType':'json'
         });
     });
+
+    if($('#helpfulPageStat').length){
+        var resource_id = $('#helpfulPageStat').closest('.helpfulPage').data('page');
+        $.ajax({
+            type: "POST",
+            url: "/",
+            data: {action:'helpfulPageStat',resource_id:resource_id},
+            success: function(data) {
+                if(data.success){
+                    $('#helpfulPageStat').text(data.helpfullness);
+                }
+
+            },
+            'dataType':'json'
+        });
+    }
 });
