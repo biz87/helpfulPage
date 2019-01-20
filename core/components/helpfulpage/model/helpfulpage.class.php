@@ -33,6 +33,7 @@ class helpfulPage
 
     function vote($resource_id = 0, $action = '')
     {
+
         if(empty($action)){
             $this->modx->log(modX::LOG_LEVEL_ERROR, '[helpFulPage] vote empty action');
             return;
@@ -91,7 +92,7 @@ class helpfulPage
         //  Голосую
         $voteObj = $this->modx->newObject('helpfulPageVote');
         $voteObj->fromArray(array(
-            'post_id' => intval($resource_id),
+            'resource_id' => intval($resource_id),
             'user_id' => intval($user_id),
             'vote' => $vote,
             'user_ip' => $user_ip,
@@ -100,7 +101,7 @@ class helpfulPage
         if($voteObj->save()){
             // Записываю количество положительных голосов в итоговую таблицу поста
             $q = $this->modx->newQuery('helpfulPageVote', array(
-                'post_id' => intval($resource_id),
+                'resource_id' => intval($resource_id),
                 'vote' => $vote
             ));
             $q->select(array(

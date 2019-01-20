@@ -1,7 +1,7 @@
 <?php
 switch ($modx->event->name) {
     case 'OnHandleRequest':
-        if($_GET['action'] == 'helpfulPageVote'){
+        if($_POST['action'] == 'helpfulPageVote'){
 
             $helpfulPage = $modx->getService('helpfulPage', 'helpfulPage', MODX_CORE_PATH . 'components/helpfulpage/model/', $scriptProperties);
             if (!$helpfulPage) {
