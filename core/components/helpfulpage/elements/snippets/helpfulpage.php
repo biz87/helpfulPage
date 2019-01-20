@@ -7,3 +7,6 @@ if (!$helpfulPage) {
     return 'Could not load helpfulPage class!';
 }
 
+$pdo = $modx->getService('pdoTools');
+
+return $pdo->getChunk('tpl.helpfulPage.tpl');

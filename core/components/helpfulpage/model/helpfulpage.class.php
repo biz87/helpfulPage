@@ -31,4 +31,92 @@ class helpfulPage
         $this->modx->lexicon->load('helpfulpage:default');
     }
 
+    function vote($resource_id = 0, $action = '')
+    {
+        if(empty($action)){
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[helpFulPage] vote empty action');
+            return;
+        }
+
+        if(intval($resource_id) == 0  || !$page = $this->modx->getObject('modResource', array('id' => $resource_id))){
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[helpFulPage] vore incorrect or empty resource_id '.$resource_id);
+            return;
+        }
+
+        $ses_id = $_COOKIE['PHPSESSID'];
+        $user_id = $this->modx->user->get('id');
+        $user_ip = $_SERVER['REMOTE_ADDR'];
+
+        if($user_id > 0){
+            $vote = $this->modx->getObject('helpfulPageVote', array('user_id' => $user_id, 'resource_id' => $resource_id));
+        }else{
+            $vote = $this->modx->getObject('helpfulPageVote', array('user_ip' => $user_ip, 'user_ses_id' => $ses_id, 'resource_id' => $resource_id));
+        }
+
+
+        if(!$vote){
+            switch($action){
+                case 'vote_for':
+                    $response = $this->process_vote($resource_id, $user_id, 1, $user_ip, $ses_id);
+                    if($response['success']){
+                        $data = [];
+                        $data['count'] = $response['count'];
+                        $data['message'] = 'Ваш голос учтен';
+                        $data['success'] = true;
+                        return json_encode($data);
+                    }
+                    break;
+                case 'vote_aganist':
+                    $response = $this->process_vote($resource_id, $user_id, -1, $user_ip, $ses_id);
+                    if($response['success']){
+                        $data = [];
+                        $data['count'] = $response['count'];
+                        $data['message'] = 'Ваш голос учтен';
+                        $data['success'] = true;
+                        return json_encode($data);
+                    }
+                    break;
+            }
+        }else{
+            $data = [];
+            $data['message'] = 'Вы уже голосовали';
+            $data['success'] = false;
+            return json_encode($data);
+        }
+
+    }
+
+    private function process_vote($resource_id, $user_id, $vote, $user_ip, $ses_id)
+    {
+        //  Голосую
+        $voteObj = $this->modx->newObject('helpfulPageVote');
+        $voteObj->fromArray(array(
+            'post_id' => intval($resource_id),
+            'user_id' => intval($user_id),
+            'vote' => $vote,
+            'user_ip' => $user_ip,
+            'user_ses_id' => $ses_id
+        ));
+        if($voteObj->save()){
+            // Записываю количество положительных голосов в итоговую таблицу поста
+            $q = $this->modx->newQuery('helpfulPageVote', array(
+                'post_id' => intval($resource_id),
+                'vote' => $vote
+            ));
+            $q->select(array(
+                "count(*) as count"
+            ));
+            $s = $q->prepare();
+            $s->execute();
+            $rows = $s->fetchAll(PDO::FETCH_ASSOC);
+            $count = $rows[0]['count'];
+
+
+            $data = [];
+            $data['count'] = $count;
+            $data['success'] = true;
+            return $data;
+        }
+    }
+
 }
