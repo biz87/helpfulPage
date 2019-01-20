@@ -61,7 +61,7 @@ class helpfulPage
                     $response = $this->process_vote($resource_id, $user_id, 1, $user_ip, $ses_id);
                     if($response['success']){
                         $data = [];
-                        $data['count'] = $response['count'];
+                        $data['helpfullness'] = $this->getHelpfulness($resource_id);
                         $data['message'] = 'Ваш голос учтен';
                         $data['success'] = true;
                         return json_encode($data);
@@ -71,7 +71,7 @@ class helpfulPage
                     $response = $this->process_vote($resource_id, $user_id, -1, $user_ip, $ses_id);
                     if($response['success']){
                         $data = [];
-                        $data['count'] = $response['count'];
+                        $data['helpfullness'] = $this->getHelpfulness($resource_id);
                         $data['message'] = 'Ваш голос учтен';
                         $data['success'] = true;
                         return json_encode($data);
@@ -100,24 +100,58 @@ class helpfulPage
         ));
         if($voteObj->save()){
             // Записываю количество положительных голосов в итоговую таблицу поста
-            $q = $this->modx->newQuery('helpfulPageVote', array(
-                'resource_id' => intval($resource_id),
-                'vote' => $vote
-            ));
-            $q->select(array(
-                "count(*) as count"
-            ));
-            $s = $q->prepare();
-            $s->execute();
-            $rows = $s->fetchAll(PDO::FETCH_ASSOC);
-            $count = $rows[0]['count'];
+//            $q = $this->modx->newQuery('helpfulPageVote', array(
+//                'resource_id' => intval($resource_id),
+//                'vote' => $vote
+//            ));
+//            $q->select(array(
+//                "count(*) as count"
+//            ));
+//            $s = $q->prepare();
+//            $s->execute();
+//            $rows = $s->fetchAll(PDO::FETCH_ASSOC);
+//            $count = $rows[0]['count'];
 
 
             $data = [];
-            $data['count'] = $count;
+            //$data['count'] = $count;
             $data['success'] = true;
             return $data;
         }
+    }
+
+    private function getHelpfulness($resource_id)
+    {
+        $q = $this->modx->newQuery('helpfulPageVote', array(
+            'resource_id' => intval($resource_id),
+        ));
+        $q->select(array(
+            "count(*) as count"
+        ));
+        $s = $q->prepare();
+        $s->execute();
+        $rows = $s->fetchAll(PDO::FETCH_ASSOC);
+        $totalCount = $rows[0]['count'];
+
+
+        $q = $this->modx->newQuery('helpfulPageVote', array(
+            'resource_id' => intval($resource_id),
+            'vote' => 1
+        ));
+        $q->select(array(
+            "count(*) as count"
+        ));
+        $s = $q->prepare();
+        $s->execute();
+        $rows = $s->fetchAll(PDO::FETCH_ASSOC);
+        $positiveCount = $rows[0]['count'];
+
+        $helpfulness = ceil($positiveCount * 100 / $totalCount);
+        if($helpfulness < 0){
+            return 0;
+        }
+        return $helpfulness;
+
     }
 
 }

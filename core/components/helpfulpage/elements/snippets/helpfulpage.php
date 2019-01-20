@@ -9,4 +9,6 @@ if (!$helpfulPage) {
 
 $pdo = $modx->getService('pdoTools');
 
+$modx->regClientScript(MODX_ASSETS_URL.'components/helpfulpage/js/default.js');
+
 return $pdo->getChunk('tpl.helpfulPage.tpl');
