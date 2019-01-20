@@ -10,8 +10,7 @@ $(document).ready(function(){
             url: "/",
             data: {action:'helpfulPageVote',vote_action:vote_action,resource_id:resource_id},
             success: function(data) {
-                console.log(data);
-                if(data.success){
+                if(data.success === true){
                     $('#helpfulPageStat').text(data.helpfullness);
                     $('.helpfulPageInfo').hide().attr('hidden', true);
 
@@ -61,8 +60,7 @@ $(document).ready(function(){
             url: "/",
             data: form.serialize(),
             success: function(data) {
-                console.log(data);
-                if(data.sucess){
+                if(data.sucess === true){
                     $('.helpfulPageInfo').hide().attr('hidden', true);
                     $('.helpfulPageForm').hide().attr('hidden', true);
                     $('.helpfulPageSuccess').show().attr('hidden', false);
@@ -77,9 +75,8 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.closeHelpfulPageForm', function(){
-        $('.helpfulPageForm')[0].reset();
+        $('.helpfulPageForm')[0].reset().hide().attr('hidden', true);
         $('.helpfulPageInfo').hide().attr('hidden', true);
-        $('.helpfulPageForm').hide().attr('hidden', true);
         $('.helpfulPageSuccess').show().attr('hidden', false);
     })
 });

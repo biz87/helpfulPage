@@ -12,7 +12,7 @@
         <input type="hidden" name="action" value="helpfulPageMessage">
         <div class="mt-3">
             <button class="btn btn-lg btn-primary mr-2">Отправить</button>
-            <button type="button" class="btn btn-lg btn-secondary">Отменить</button>
+            <button type="button" class="btn btn-lg btn-secondary closeHelpfulPageForm">Отменить</button>
         </div>
     </form>
 
