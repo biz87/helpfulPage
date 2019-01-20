@@ -17,4 +17,5 @@
     </form>
 
     <div class="helpfulPageSuccess" hidden><p>Благодарим за оставленный Вами отзыв! Мы стараемся становиться лучше!</p></div>
+    <div class="helpfulPageError" hidden><p></p></div>
 </div>

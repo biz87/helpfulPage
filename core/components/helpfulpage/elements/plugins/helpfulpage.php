@@ -45,7 +45,7 @@ switch ($modx->event->name) {
             $message = filter_input(INPUT_POST,'message', FILTER_SANITIZE_STRING);
             $emailTpl = 'tpl.helpfulPageEmailTpl';
             if(!empty($resource_id) && !empty($message)){
-                $response = $helpfulPage->sendMail($resource_id, $message, $emailTpl);
+                $response = $helpfulPage->prepareEmail($resource_id, $message, $emailTpl);
                 echo $response;
                 die();
             }

@@ -43,7 +43,7 @@
                                             <td>
                                                 <p>На сайте {'site_name' | config} оставлен новый отзыв. </p>
                                                 <p><strong>Страница:</strong> {$resource_id | resource : 'pagetitle'}</p>
-                                                <p>{$$message}</p>
+                                                <p>{$message}</p>
                                             </td>
                                         </tr>
 
