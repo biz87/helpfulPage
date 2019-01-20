@@ -162,6 +162,8 @@ class helpfulPage
 
         if (preg_match('#.*?@.*#', $email)) {
             $this->sendEmail($email, $subject, $body);
+            $response = [];
+            $response['success'] = true;
         }
     }
 
