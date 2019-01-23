@@ -43,7 +43,7 @@ switch ($modx->event->name) {
 
             $resource_id = filter_input(INPUT_POST,'resource_id', FILTER_VALIDATE_INT);
             $message = filter_input(INPUT_POST,'message', FILTER_SANITIZE_STRING);
-            $emailTpl = 'tpl.helpfulPageEmailTpl';
+            $emailTpl = $modx->getOption('helpfulpage_email_tpl', null, 'tpl.helpfulPageEmailTpl');
             if(!empty($resource_id) && !empty($message)){
                 $response = $helpfulPage->prepareEmail($resource_id, $message, $emailTpl);
                 echo $response;

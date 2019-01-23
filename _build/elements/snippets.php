@@ -4,6 +4,11 @@ return [
     'helpfulPage' => [
         'file' => 'helpfulpage',
         'description' => '',
-        'properties' => [],
+        'properties' => [
+            'tpl' => [
+                'type' => 'textfield',
+                'value' => 'tpl.helpfulPageTpl',
+            ],
+        ],
     ],
 ];

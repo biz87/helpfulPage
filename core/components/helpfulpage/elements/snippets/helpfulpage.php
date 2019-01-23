@@ -11,4 +11,6 @@ $pdo = $modx->getService('pdoTools');
 
 $modx->regClientScript(MODX_ASSETS_URL.'components/helpfulpage/js/default.js');
 
-return $pdo->getChunk('tpl.helpfulPageTpl');
+$chunk = $modx->getOption('tpl', $scriptProperties, 'tpl.helpfulPageTpl');
+
+return $pdo->getChunk($chunk);
