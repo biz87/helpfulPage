@@ -8,12 +8,12 @@ return [
     ],
     'email_subject' => [
         'xtype' => 'textfield',
-        'value' => 'Новый отзыв с сайта [[++site_name]]',
+        'value' => 'Новый отзыв',
         'area' => 'helpfulpage_main',
     ],
-    'email_sender' => [
+    'email_to' => [
         'xtype' => 'textfield',
-        'value' => '[[++emailsender]]',
+        'value' => '',
         'area' => 'helpfulpage_main',
     ],
 ];

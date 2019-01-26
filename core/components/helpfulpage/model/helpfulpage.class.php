@@ -151,13 +151,17 @@ class helpfulPage
     }
 
     public function prepareEmail($resoure_id, $message, $emailTpl){
-        $emailto = $this->modx->getOption('helpfulpage_email_sender', null, $this->modx->getOption('emailsender'));
+        $emailto = $this->modx->getOption('helpfulpage_email_to', null, $this->modx->getOption('emailsender'));
         $subject = $this->modx->getOption('helpfulpage_email_subject', null, 'Новый отзыв с сайта '.$this->modx->getOption('site_name'));
 
         if(!empty($message)){
             $message = $this->modx_tags($message);
         }
 
+        if(empty($emailto)){
+            $emailto = $this->modx->getOption('emailsender');
+
+        }
         $body = $this->pdo->getChunk($emailTpl, array('message' => $message, 'resource_id' => $resoure_id));
 
         if (preg_match('#.*?@.*#', $emailto)) {
